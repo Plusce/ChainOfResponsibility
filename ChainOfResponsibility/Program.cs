@@ -1,24 +1,22 @@
 ﻿using System;
-using System.Reflection;
 using System.Threading.Tasks;
 using Castle.MicroKernel.Lifestyle;
 using Castle.Windsor;
-using Castle.Windsor.Installer;
 using ChainOfResponsibility.Interfaces;
+using ChainOfResponsibility.IoC;
 using ChainOfResponsibility.Middleware;
 
 namespace ChainOfResponsibility
 {
     class Program
     {
+        private static IWindsorContainer Container => WindsorContainerSingleton.Instance;
+
         static async Task Main(string[] args)
         {
-            var container = new WindsorContainer();
-            using (container.BeginScope())
+            using (Container.BeginScope())
             {
-                container.Install(FromAssembly.InThisApplication(Assembly.GetExecutingAssembly()));
-                var requestProcessor = container.Resolve<IRequestProcessor>();
-
+                var requestProcessor = Container.Resolve<IRequestProcessor>();
                 requestProcessor.AddStep<LessThan0Middleware>();
                 requestProcessor.AddStep<LessThan5Middleware>();
                 requestProcessor.AddStep<LessThan10Middleware>();
