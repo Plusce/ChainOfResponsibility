@@ -1,0 +1,7 @@
+{
+  "profiles": {
+    "ChainOfResponsibility.Tests": {
+      "commandName": "Project"
+    }
+  }
+}
